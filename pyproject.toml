@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "product-parser"
+version = "0.1.0"
+description = ""
+authors = ["Kseniia <127607406+Kseniia-Artemova@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "product_parser"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
