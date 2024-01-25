@@ -78,10 +78,12 @@ class DBSaverSamokat(DBSaver):
         try:
             self.create_connection()
 
+            one_product = product_list[0]
+            keys = ', '.join(one_product.keys())
+            placeholders = ', '.join(['%s'] * len(one_product))
+            update_statement = ', '.join([f"{key} = EXCLUDED.{key}" for key in one_product.keys()])
+
             for product in product_list:
-                keys = ', '.join(product.keys())
-                placeholders = ', '.join(['%s'] * len(product))
-                update_statement = ', '.join([f"{key} = EXCLUDED.{key}" for key in product.keys()])
 
                 self.cursor.execute(f"""
                     INSERT INTO products ({keys})
