@@ -4,12 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Kseniia <127607406+Kseniia-Artemova@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "product_parser"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.11"
-requests = "^2.31.0"
 python-dotenv = "^1.0.1"
+selenium = "^4.17.2"
+webdriver-manager = "^4.0.1"
+psycopg2-binary = "^2.9.9"
 
 
 [build-system]
