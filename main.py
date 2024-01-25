@@ -7,6 +7,13 @@ from utils import format_product_dict
 import random
 
 if __name__ == '__main__':
+    """
+    Главная функция программы.
+    Создает объекты для получения информации со страницы и сохранения ее в базу данных.
+    
+    Циклически принимает от пользователя url сайта, адрес сайта должен соответствовать шаблону.
+    Для выхода из цикла нужно ввести "exit".
+    """
 
     downloader = ContentDownloaderSamokat()
     downloader.id_for_checking = DEFAULT_HTML_ID

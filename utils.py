@@ -1,4 +1,12 @@
-def format_product_dict(element):
+def format_product_dict(element: dict) -> dict:
+    """
+    Перевод словаря с данными о продукте в формат,
+    подходящий для записи в базу данных.
+
+    Подходит только для таблицы, которая создается в скрипте
+    saving_content/create_product_table_samokat.sql
+    """
+
     formatted_element = {
         'id': element['id'],
         'name': element['name'],

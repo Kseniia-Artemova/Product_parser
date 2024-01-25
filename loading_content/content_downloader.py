@@ -13,54 +13,64 @@ from abc import ABC, abstractmethod
 
 
 class ContentDownloader(ABC):
+    """Абстрактный класс для загрузки контента с сайта"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._url = None
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self._url
 
     @url.setter
-    def url(self, url):
+    def url(self, url: str) -> None:
         self._url = url
 
     @url.deleter
-    def url(self):
+    def url(self) -> None:
         self._url = None
 
     @abstractmethod
     def get_content_html(self):
+        """Абстрактный метод для получения контента с сайта"""
         pass
 
 
 class ContentDownloaderSamokat(ContentDownloader):
+    """Класс для загрузки контента с сайта samokat.ru"""
 
-    def __init__(self, header=None):
+    def __init__(self, header=None) -> None:
         super().__init__()
         self._driver = None
         self._header = header
         self._id_for_checking = None
 
     @property
-    def driver(self):
+    def driver(self) -> webdriver.Chrome:
         if self._driver is None:
             self._initialize_driver()
         return self._driver
 
     @property
-    def id_for_checking(self):
+    def id_for_checking(self) -> str:
         return self._id_for_checking
 
     @id_for_checking.setter
-    def id_for_checking(self, id_for_checking):
+    def id_for_checking(self, id_for_checking: str) -> None:
         self._id_for_checking = id_for_checking
 
     @id_for_checking.deleter
-    def id_for_checking(self):
+    def id_for_checking(self) -> None:
         self._id_for_checking = '__NEXT_DATA__'
 
-    def _initialize_driver(self):
+    def _initialize_driver(self) -> None:
+        """
+        Инициализация драйвера для работы с браузером.
+
+        Переменные загружаются из окружения.
+        Драйвер устанавливается в объект класса в качестве атрибута.
+        Есть разница, запущен проект в docker или в обычном режиме локально.
+        """
         header = self._header if self._header else os.getenv('HEADER')
 
         chrome_options = Options()
@@ -76,12 +86,16 @@ class ContentDownloaderSamokat(ContentDownloader):
 
         self._driver = webdriver.Chrome(service=service, options=chrome_options)
 
-    def close_driver(self):
+    def close_driver(self) -> None:
+        """Закрытие драйвера"""
+
         if self._driver:
             self._driver.quit()
             self._driver = None
 
-    def get_content_html(self):
+    def get_content_html(self) -> str:
+        """Метод для получения полного кода страницы с сайта"""
+
         try:
             self.driver.get(self._url)
             WebDriverWait(self.driver, 10).until(
@@ -91,7 +105,9 @@ class ContentDownloaderSamokat(ContentDownloader):
         finally:
             self.close_driver()
 
-    def get_content_by_id(self, html_id):
+    def get_content_by_id(self, html_id: str) -> str:
+        """Метод для получения контента по ID элемента на странице"""
+
         try:
             self.driver.get(self._url)
             WebDriverWait(self.driver, 10).until(
@@ -102,7 +118,15 @@ class ContentDownloaderSamokat(ContentDownloader):
         finally:
             self.close_driver()
 
-    def get_product_dict(self, html_id, dict_keys):
+    def get_product_dict(self, html_id: str, dict_keys: list[str]) -> dict:
+        """
+        Метод для получения словаря с контентом по ID элемента на странице.
+
+        Исследование словаря, полученного по id элемента на странице,
+        производится последовательно, по переданному списку ключей,
+        каждую итерацию углубляясь на один уровень вложенности
+        """
+
         content = self.get_content_by_id(html_id)
 
         try:
