@@ -1,9 +1,6 @@
 import json
 import os
 
-from dotenv import load_dotenv
-from pathlib import Path
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -43,7 +40,7 @@ class ContentDownloaderSamokat(ContentDownloader):
         super().__init__()
         self._driver = None
         self._header = header
-        self._id_for_checking = '__NEXT_DATA__'
+        self._id_for_checking = None
 
     @property
     def driver(self):
@@ -65,11 +62,17 @@ class ContentDownloaderSamokat(ContentDownloader):
 
     def _initialize_driver(self):
         header = self._header if self._header else os.getenv('HEADER')
-        service = Service(ChromeDriverManager().install())
-        chrome_options = Options()
 
+        chrome_options = Options()
         chrome_options.add_argument(f"user-agent={header}")
         chrome_options.add_argument("--headless")
+
+        if os.getenv('RUNNING_IN_DOCKER'):
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            service = Service(executable_path="/usr/bin/chromedriver")
+        else:
+            service = Service(ChromeDriverManager().install())
 
         self._driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -105,15 +108,15 @@ class ContentDownloaderSamokat(ContentDownloader):
         try:
             dict_data = json.loads(content)
         except json.decoder.JSONDecodeError as e:
-            print(f'Impossible to decode: {e}')
+            print(f'Ошибка декодирования: {e}')
             return
         except TypeError as e:
-            print(f'Impossible to decode: {e}')
+            print(f'Ошибка декодирования: {e}')
             return
 
         for dict_key in dict_keys:
             dict_data = dict_data.get(dict_key, False)
             if dict_data is False:
-                print('Content not found')
+                print('Искомый контент не найден.')
                 return
         return dict_data

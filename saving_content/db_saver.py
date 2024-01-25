@@ -56,12 +56,16 @@ class DBSaverSamokat(DBSaver):
             self.create_connection()
 
             for product in product_list:
+                keys = ', '.join(product.keys())
                 placeholders = ', '.join(['%s'] * len(product))
+                update_statement = ', '.join([f"{key} = EXCLUDED.{key}" for key in product.keys()])
+
                 self.cursor.execute(f"""
-                    INSERT INTO products ({', '.join(product.keys())})
+                    INSERT INTO products ({keys})
                     VALUES ({placeholders})
-                    ON CONFLICT (id) DO NOTHING;
-                """, tuple([*product.values()]))
+                    ON CONFLICT (id) DO UPDATE SET
+                    {update_statement};
+                """, tuple(product.values()))
                 self.conn.commit()
 
         finally:
