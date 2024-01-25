@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 from selenium import webdriver
+from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -43,7 +44,7 @@ class ContentDownloaderSamokat(ContentDownloader):
         super().__init__()
         self._driver = None
         self._header = header
-        self._id_for_checking = '__NEXT_DATA__'
+        self._id_for_checking = None
 
     @property
     def driver(self):
@@ -105,15 +106,15 @@ class ContentDownloaderSamokat(ContentDownloader):
         try:
             dict_data = json.loads(content)
         except json.decoder.JSONDecodeError as e:
-            print(f'Impossible to decode: {e}')
+            print(f'Ошибка декодирования: {e}')
             return
         except TypeError as e:
-            print(f'Impossible to decode: {e}')
+            print(f'Ошибка декодирования: {e}')
             return
 
         for dict_key in dict_keys:
             dict_data = dict_data.get(dict_key, False)
             if dict_data is False:
-                print('Content not found')
+                print('Искомый контент не найден.')
                 return
         return dict_data
