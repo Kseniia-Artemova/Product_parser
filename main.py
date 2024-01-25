@@ -1,4 +1,4 @@
-from config import URL, KEY_LIST, TARGET_HTML_ID, PATH_TO_SQL, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, \
+from config import KEY_LIST, TARGET_HTML_ID, PATH_TO_SQL, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, \
     POSTGRES_HOST, \
     POSTGRES_PORT, ELEMENTS_AMOUNT, DEFAULT_HTML_ID, PATTERN_URL
 from loading_content.content_downloader import ContentDownloaderSamokat
@@ -60,5 +60,5 @@ if __name__ == '__main__':
             print('Данные успешно сохранены в базу данных.\n')
 
         except Exception as e:
-            print(f'Произошла ошибка: {e}, попробуйте ещё раз. ')
+            print(f'Произошла ошибка: {e}, попробуйте ещё раз.\n')
             continue

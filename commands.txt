@@ -1,0 +1,9 @@
+# Docker
+docker-compose run --rm -it app
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q) -f
+
+docker-compose up -d --build
+docker exec -it <container-name-or-id> /bin/sh

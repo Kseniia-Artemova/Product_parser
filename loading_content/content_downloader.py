@@ -1,11 +1,7 @@
 import json
 import os
 
-from dotenv import load_dotenv
-from pathlib import Path
-
 from selenium import webdriver
-from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -66,11 +62,17 @@ class ContentDownloaderSamokat(ContentDownloader):
 
     def _initialize_driver(self):
         header = self._header if self._header else os.getenv('HEADER')
-        service = Service(ChromeDriverManager().install())
-        chrome_options = Options()
 
+        chrome_options = Options()
         chrome_options.add_argument(f"user-agent={header}")
         chrome_options.add_argument("--headless")
+
+        if os.getenv('RUNNING_IN_DOCKER'):
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            service = Service(executable_path="/usr/bin/chromedriver")
+        else:
+            service = Service(ChromeDriverManager().install())
 
         self._driver = webdriver.Chrome(service=service, options=chrome_options)
 

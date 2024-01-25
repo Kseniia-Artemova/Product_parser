@@ -8,7 +8,7 @@ env_path = Path(__file__).parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # URL = 'https://web.samokat.ru'
-URL = 'https://samokat.ru/category/gotovaya-eda-kuhnya-na-rajone'
+# URL = 'https://samokat.ru/category/gotovaya-eda-kuhnya-na-rajone'
 PATTERN_URL = re.compile(r'^https://samokat\.ru/(?!category/promo-)[^/]*(/[^/]+)?$')
 HEADER = os.getenv('HEADER')
 DEFAULT_HTML_ID = '__NEXT_DATA__'
