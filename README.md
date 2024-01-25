@@ -22,8 +22,9 @@
 2. Скопировать переменные из *.env.docker.sample* в *.env.docker* и установить необходимые значения переменных окружения, как описано в разделе "Настройки окружения".
 3. Убедиться, что установлены Docker и Docker Compose.
 4. В командной строке выполнить команды:
-`docker-compose up -d --build && docker exec -it app /bin/sh` (для bash)
-`docker-compose up -d --build; docker exec -it app /bin/sh` (для Powershell)
+   
++ `docker-compose up -d --build && docker exec -it app /bin/sh` (для bash)
++ `docker-compose up -d --build; docker exec -it app /bin/sh` (для Powershell)
 
 
 :shipit:
