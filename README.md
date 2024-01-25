@@ -23,8 +23,8 @@
 3. Убедиться, что установлены Docker и Docker Compose.
 4. В командной строке выполнить команды:
    
-+ `docker-compose up -d --build && docker exec -it app /bin/sh` (для bash)
-+ `docker-compose up -d --build; docker exec -it app /bin/sh` (для Powershell)
++ `docker-compose up -d --build && docker attach app_product_parser` (для bash)
++ `docker-compose up -d --build; docker attach app_product_parser` (для Powershell)
 
 
 :shipit:
